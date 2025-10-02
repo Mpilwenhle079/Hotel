@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Payment | uMhlanga Rocks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="payment.css">
+</head>
+<header>
+    <a href="Index.html">BACK</a>
+</header>
+<body>
+    <div class="payment-container">
+        <h2>Hotel Payment</h2>
+        <form id="paymentForm" onsubmit="event.preventDefault(); payNow();">
+            <label>
+                Name on Card
+                <input type="text" required>
+            </label>
+            <label>
+                Card Number
+                <input type="text" maxlength="16" pattern="\d{16}" required>
+            </label>
+            <label>
+                Expiry Date
+                <input type="month" required>
+            </label>
+            <label>
+                CVV
+                <input type="password" maxlength="4" pattern="\d{3,4}" required>
+            </label>
+            <label>
+                Payment For
+                <select id="paymentType" required>
+                    <option value="hotel">Hotel Fee</option>
+                    <option value="item">Item Purchase</option>
+                </select>
+            </label>
+            <label>
+                Amount (ZAR)
+                <input type="number" min="1" id="amountInput" required>
+            </label>
+            <button type="submit" class="pay-btn">Pay Now</button>
+        </form>
+        <div id="successMsg" class="success"></div>
+    </div>
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const amount = params.get('amount');
+            if (amount) {
+                document.getElementById('amountInput').value = amount;
+            }
+        }
+        function payNow() {
+            document.getElementById('successMsg').textContent = "Payment Successful! Thank you for your purchase.";
+            document.getElementById('paymentForm').reset();
+        }
+    </script>
+</body>
+</html>

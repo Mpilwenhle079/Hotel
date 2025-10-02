@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Your Stay | uMhlanga Rocks Hotel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+    <header>
+        <a href="Index.html" style="margin-right: 20px;">BACK HOME</a>
+    </header>
+    <div class="container">
+        <h2>Book Your Stay</h2>
+        <form id="bookingForm">
+            <label>Check-in Date & Time
+                <input type="datetime-local" id="checkin" required>
+            </label>
+            <label>Check-out Date & Time
+                <input type="datetime-local" id="checkout" required>
+            </label>
+            <label>Number of Guests
+                <input type="number" id="guests" min="1" max="10" value="1" required>
+            </label>
+            <label>Floor Level
+                <select id="floor">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </label>
+            <label>Room Type
+                <select id="roomType">
+                    <option value="standard">Standard</option>
+                    <option value="executive">Executive</option>
+                    <option value="presidential">Presidential Suite</option>
+                </select>
+            </label>
+            <label>Food Preferences
+                <select id="food">
+                    <option value="buffet">Buffet</option>
+                    <option value="a_la_carte">À la carte</option>
+                    <option value="vegan">Vegan</option>
+                </select>
+            </label>
+            <button type="button" class="btn" onclick="calculateCost()">Calculate Cost</button>
+        </form>
+        <div class="cost" id="totalCost"></div>
+    </div>
+    <div class="payment-center">
+        <a id="paymentLink" href="#" class="payment-btn">PAYMENT</a>
+    </div>
+
+    <script>
+        function calculateCost() {
+            const baseRates = { standard: 500, executive: 900, presidential: 1500 };
+            const floorPremiums = { 1: 0, 2: 20, 3: 40, 4: 60, 5: 80, 6: 100, 7: 120, 8: 140, 9: 160, 10: 200 };
+            const foodCosts = { buffet: 150, a_la_carte: 250, vegan: 180 };
+
+            const checkin = new Date(document.getElementById('checkin').value);
+            const checkout = new Date(document.getElementById('checkout').value);
+            const guests = parseInt(document.getElementById('guests').value);
+            const floor = document.getElementById('floor').value;
+            const roomType = document.getElementById('roomType').value;
+            const food = document.getElementById('food').value;
+
+            const hours = Math.max(1, Math.ceil((checkout - checkin) / (1000 * 60 * 60)));
+            if (isNaN(hours) || hours <= 0) {
+                document.getElementById('totalCost').textContent = "Please select valid check-in and check-out times.";
+                return;
+            }
+
+            const baseRate = baseRates[roomType];
+            const floorPremium = floorPremiums[floor];
+            const foodCost = foodCosts[food] * guests;
+            const total = (baseRate * hours * guests) + floorPremium + foodCost;
+
+            document.getElementById('totalCost').textContent = `Total Cost: R${total.toLocaleString()}`;
+            document.getElementById('paymentLink').href = `paymant.html?amount=${total}`;
+        }
+    </script>
+</body>
+</html>

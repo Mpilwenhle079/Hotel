@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Luxury Food Menu | uMhlanga Rocks Hotel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="food_menu.css">
+</head>
+<header>
+    <a href="Index.html">BACK HOME</a>
+</header>
+<body>
+    <div class="container">
+        <h2>Luxury Food Menu</h2>
+        <div class="filters">
+            <label><input type="checkbox" id="veganFilter"> Vegan</label>
+            <label><input type="checkbox" id="halalFilter"> Halal</label>
+            <label><input type="checkbox" id="glutenFilter"> Gluten-Free</label>
+        </div>
+        <form id="menuForm">
+            <ul class="menu-list" id="menuList">
+                <!-- Menu items will be injected here -->
+            </ul>
+            <button type="button" class="preorder-btn" onclick="preOrder()">Pre-Order Selected Meals</button>
+        </form>
+        <div id="orderSummary" style="margin-top:2rem; text-align:center; color:#023e8a;"></div>
+    </div>
+    <script>
+        // Menu data
+        const menu = [
+            { name: "Wagyu Beef Fillet", desc: "Grilled with truffle butter and jus", price: 480, vegan: false, halal: true, gluten: true },
+            { name: "Lobster Thermidor", desc: "Creamy garlic lobster with parmesan crust", price: 520, vegan: false, halal: false, gluten: false },
+            { name: "Rack of Lamb", desc: "Herb-crusted, served with mint jus", price: 450, vegan: false, halal: true, gluten: true },
+            { name: "Seared Salmon", desc: "Served with lemon beurre blanc", price: 390, vegan: false, halal: false, gluten: true },
+            { name: "Durban Lamb Curry", desc: "Served with basmati rice and sambals", price: 220, vegan: false, halal: true, gluten: true },
+            { name: "Bunny Chow", desc: "Half loaf filled with spicy curry", price: 180, vegan: false, halal: true, gluten: false },
+            { name: "Samp & Beans with Oxtail", desc: "Traditional Zulu comfort dish", price: 250, vegan: false, halal: true, gluten: true },
+            { name: "Grilled Boerewors Platter", desc: "With chakalaka and pap", price: 190, vegan: false, halal: false, gluten: true },
+            { name: "Caesar Salad with Chicken", desc: "Classic with anchovy dressing", price: 160, vegan: false, halal: true, gluten: true },
+            { name: "Vegan Buddha Bowl", desc: "Quinoa, roasted veg, hummus", price: 170, vegan: true, halal: true, gluten: true },
+            { name: "Seafood Pasta", desc: "Creamy linguine with prawns and calamari", price: 280, vegan: false, halal: false, gluten: false },
+            { name: "Chicken Schnitzel", desc: "Served with fries and lemon wedge", price: 190, vegan: false, halal: true, gluten: false },
+            { name: "Chocolate Fondant", desc: "Molten center with vanilla ice cream", price: 120, vegan: false, halal: true, gluten: false },
+            { name: "Rooibos Crème Brûlée", desc: "Local twist on a French classic", price: 110, vegan: false, halal: true, gluten: true },
+            { name: "Artisan Cheesecake", desc: "Seasonal fruit topping", price: 115, vegan: false, halal: true, gluten: false },
+            { name: "Macaron Selection (6 pcs)", desc: "Assorted flavours", price: 95, vegan: false, halal: true, gluten: false },
+            { name: "Fresh Juice", desc: "Orange, Mango", price: 45, vegan: true, halal: true, gluten: true },
+            { name: "Rooibos or Herbal Tea", desc: "Premium loose-leaf", price: 35, vegan: true, halal: true, gluten: true },
+            { name: "Cappuccino / Latte", desc: "Barista-style", price: 40, vegan: false, halal: true, gluten: true },
+            { name: "Signature Mocktail", desc: "Tropical blend with mint", price: 65, vegan: true, halal: true, gluten: true },
+            { name: "House Wine (per glass)", desc: "Red or white", price: 85, vegan: false, halal: false, gluten: true }
+        ];
+
+        function renderMenu() {
+            const vegan = document.getElementById('veganFilter').checked;
+            const halal = document.getElementById('halalFilter').checked;
+            const gluten = document.getElementById('glutenFilter').checked;
+            const menuList = document.getElementById('menuList');
+            menuList.innerHTML = '';
+            menu.forEach((item, idx) => {
+                if ((vegan && !item.vegan) || (halal && !item.halal) || (gluten && !item.gluten)) return;
+                menuList.innerHTML += `
+                    <li class="menu-item">
+                        <input type="checkbox" name="food" value="${idx}">
+                        <span class="desc"><strong>${item.name}</strong><br>${item.desc}</span>
+                        <span class="price">R${item.price}</span>
+                    </li>
+                `;
+            });
+        }
+
+        document.getElementById('veganFilter').addEventListener('change', renderMenu);
+        document.getElementById('halalFilter').addEventListener('change', renderMenu);
+        document.getElementById('glutenFilter').addEventListener('change', renderMenu);
+
+        renderMenu();
+
+        function preOrder() {
+            const checked = Array.from(document.querySelectorAll('input[name="food"]:checked'));
+            if (checked.length === 0) {
+                document.getElementById('orderSummary').textContent = "Please select at least one meal to pre-order.";
+                return;
+            }
+            let total = 0;
+            let items = [];
+            checked.forEach(c => {
+                const item = menu[c.value];
+                total += item.price;
+                items.push(item.name);
+            });
+            document.getElementById('orderSummary').innerHTML = `
+                <strong>Pre-Order Summary:</strong><br>
+                ${items.join(", ")}<br>
+                <strong>Total: R${total.toLocaleString()}</strong>
+            `;
+        }
+
+        function updatePaymentLink() {
+            const checked = Array.from(document.querySelectorAll('input[name="food"]:checked'));
+            let total = 0;
+            checked.forEach(c => {
+                const item = menu[c.value];
+                total += item.price;
+            });
+            document.getElementById('paymentLink').href = `paymant.html?amount=${total}`;
+        }
+
+        document.getElementById('menuForm').addEventListener('change', updatePaymentLink);
+    </script>
+    <div class="payment-center">
+        <a id="paymentLink" href="#" class="payment-btn">PAYMENT</a>
+    </div>
+</body>
+</html>
