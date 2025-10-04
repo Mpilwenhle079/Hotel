@@ -12,11 +12,11 @@
 <body>
     <div class="container">
         <h2>Luxury Food Menu</h2>
-        <div class="filters">
-            <label><input type="checkbox" id="veganFilter"> Vegan</label>
-            <label><input type="checkbox" id="halalFilter"> Halal</label>
-            <label><input type="checkbox" id="glutenFilter"> Gluten-Free</label>
-        </div>
+       <div class="filters">
+    <label><input type="radio" name="dietFilter" id="veganFilter" value="vegan"> Vegan</label>
+    <label><input type="radio" name="dietFilter" id="halalFilter" value="halal"> Halal</label>
+    <label><input type="radio" name="dietFilter" id="glutenFilter" value="gluten-free"> Gluten-Free</label>
+</div>
         <form id="menuForm">
             <ul class="menu-list" id="menuList">
                 <!-- Menu items will be injected here -->
