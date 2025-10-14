@@ -140,7 +140,7 @@ header a:hover {
     color: rgb(248, 245, 245); /* Optional: ensures text is readable on dark backgrounds */
     text-align: center;
 }
-background:linear-gradient(rgba(0,0,0,0.5) rgba(0,0,0,0.5)) url('7 ster.jpg');
+background:linear-gradient(rgba(0,0,0,0.5) rgba(0,0,0,0.5) url('7 ster.jpg'))
 .tagline {
     font-family: 'Playfair Display', serif; /* Sophisticated and stylish */
     font-size: 64px;
